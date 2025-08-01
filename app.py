@@ -37,7 +37,7 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
 
 # Streamlit UI
 st.set_page_config(layout="wide")
-st.title("🌍 WorldClim ZIP Extractor")
+st.title("🌍 WorldClim Extractor")
 
 col1, col2 = st.columns([2, 1])
 
