@@ -5,6 +5,11 @@ from rasterio.windows import Window
 from io import BytesIO
 
 def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
+    """
+    Read either monthly (12) or bioclimatic (19) variables from a WorldClim .zip file
+    via remote access using GDAL's virtual filesystem. Returns a copy of `df`
+    with added columns like 'bio_30s_5' or 'tmin_2.5m_07'.
+    """
     coords = list(zip(df[lon_col], df[lat_col]))
     result = df.copy()
 
@@ -13,16 +18,13 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
         "GDAL_DISABLE_READDIR_ON_OPEN": "EMPTY_DIR",
         "CPL_VSIL_CURL_USE_HEAD": "YES"
     }
-    if var == "bio":
-        # Bioclim ima 25 slojeva, 1–25
-        layers = list(range(1, 26))
-    else:
-        # Ostale varijable imaju 12 mjesečnih slojeva
-        layers = list(range(1, 13))
 
-    for i in layers:
-        istr = f"{i:02d}" if var != "bio" else str(i)
+    # Bioclim has exactly 19 layers; all others have 12 monthly values
+    max_layer = 19 if var.lower() == "bio" else 12
+    for i in range(1, max_layer + 1):
+        istr = f"{i:02d}"
         inside = f"wc2.1_{res}_{var}_{istr}.tif"
+
         vsi_path = f"/vsizip/vsicurl/{zip_url}/{inside}"
 
         vals = []
@@ -31,9 +33,12 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
                 if pixel_window:
                     for lon, lat in coords:
                         row, col = src.index(lon, lat)
-                        win = Window(col - pixel_window//2,
-                                     row - pixel_window//2,
-                                     pixel_window, pixel_window)
+                        win = Window(
+                            col - pixel_window // 2,
+                            row - pixel_window // 2,
+                            pixel_window,
+                            pixel_window,
+                        )
                         arr = src.read(1, window=win, boundless=True)
                         vals.append(float(arr.mean()))
                 else:
@@ -42,16 +47,23 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
 
     return result
 
-# Streamlit UI
+# --- Streamlit user interface ---
 st.set_page_config(layout="wide")
 st.title("🌍 WorldClim Extractor")
 
 col1, col2 = st.columns([2, 1])
 
 with col1:
-    uploaded = st.file_uploader("📄 Upload CSV or Excel file with coordinates", type=["csv", "xlsx"])
+    uploaded = st.file_uploader(
+        "📄 Upload CSV or Excel file with coordinates",
+        type=["csv", "xlsx"]
+    )
     if uploaded:
-        df = pd.read_excel(uploaded) if uploaded.name.endswith(("xls", "xlsx")) else pd.read_csv(uploaded)
+        df = (
+            pd.read_excel(uploaded)
+            if uploaded.name.lower().endswith(("xls", "xlsx"))
+            else pd.read_csv(uploaded)
+        )
         st.subheader("📋 Preview of uploaded data")
         st.dataframe(df.head())
 
@@ -59,7 +71,12 @@ with col1:
         lat_col = st.text_input("🧭 Latitude column", "Latitude")
         var = st.selectbox("📌 Variable", ["bio","elev","tmin","tmax","tavg","prec","srad","wind","vapr"])
         res = st.selectbox("📏 Resolution", ["30s","2.5m","5m","10m"])
-        pw = st.number_input("🪟 Pixel window (odd integer)", min_value=1, step=2, value=1)
+        pw = st.number_input(
+            "🪟 Pixel window (odd integer)",
+            min_value=1,
+            step=2,
+            value=1
+        )
 
         base_url = "https://geodata.ucdavis.edu/climate/worldclim/2_1/base"
         zip_url = f"{base_url}/wc2.1_{res}_{var}.zip"
@@ -70,7 +87,15 @@ with col1:
 
         if st.button("▶️ Run extraction"):
             with st.spinner("🔍 Extracting..."):
-                out = extract_from_zip(df, lon_col, lat_col, var, res, pw if pw > 1 else None, zip_url)
+                out = extract_from_zip(
+                    df,
+                    lon_col,
+                    lat_col,
+                    var,
+                    res,
+                    pw if pw > 1 else None,
+                    zip_url
+                )
             st.success("✅ Extraction complete!")
 
             st.write("### 📈 First 10 rows of extracted data")
