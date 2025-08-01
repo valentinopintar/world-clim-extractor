@@ -13,11 +13,18 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
         "GDAL_DISABLE_READDIR_ON_OPEN": "EMPTY_DIR",
         "CPL_VSIL_CURL_USE_HEAD": "YES"
     }
+    if var == "bio":
+        # Bioclim ima 25 slojeva, 1–25
+        layers = list(range(1, 26))
+    else:
+        # Ostale varijable imaju 12 mjesečnih slojeva
+        layers = list(range(1, 13))
 
-    for m in range(1,13):
-        mstr = f"{m:02d}"
-        inside = f"wc2.1_{res}_{var}_{mstr}.tif"
+    for i in layers:
+        istr = f"{i:02d}" if var != "bio" else str(i)
+        inside = f"wc2.1_{res}_{var}_{istr}.tif"
         vsi_path = f"/vsizip/vsicurl/{zip_url}/{inside}"
+
         vals = []
         with rasterio.Env(**gdal_cfg):
             with rasterio.open(vsi_path) as src:
@@ -54,9 +61,9 @@ with col1:
         res = st.selectbox("📏 Resolution", ["30s","2.5m","5m","10m"])
         pw = st.number_input("🪟 Pixel window (odd integer)", min_value=1, step=2, value=1)
 
-        base_url = "geodata.ucdavis.edu/climate/worldclim/2_1/base"
+        base_url = "https://geodata.ucdavis.edu/climate/worldclim/2_1/base"
         zip_url = f"{base_url}/wc2.1_{res}_{var}.zip"
-        st.markdown(f"📦 **Using ZIP URL**: {zip_url}")
+        st.markdown(f"📦 **Using ZIP URL**: [{zip_url}]({zip_url})")
 
         save_format = st.radio("💾 Download format", ["CSV", "Excel (XLSX)"])
         file_name = st.text_input("✏️ Output filename (no extension)", "output")
