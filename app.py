@@ -17,7 +17,7 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
     for m in range(1,13):
         mstr = f"{m:02d}"
         inside = f"wc2.1_{res}_{var}_{mstr}.tif"
-        vsi_path = f"/vsizip//vsicurl/{zip_url}/{inside}"
+        vsi_path = f"/vsizip/vsicurl/{zip_url}/{inside}"
         vals = []
         with rasterio.Env(**gdal_cfg):
             with rasterio.open(vsi_path) as src:
