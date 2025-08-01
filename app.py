@@ -23,10 +23,9 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
     max_layer = 19 if var.lower() == "bio" else 12
     for i in range(1, max_layer + 1):
         if var.lower() == "bio":
-            # Bioclim ima 19 slojeva, bez vodeće nule
+            # Bioclim 19, starts with 1
             istr = str(i)
         else:
-            # Ostale varijable imaju 12 mjesečnih slojeva s vodećom nulom
             istr = f"{i:02d}"
         inside = f"wc2.1_{res}_{var}_{istr}.tif"
 
@@ -35,20 +34,22 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
         vals = []
         with rasterio.Env(**gdal_cfg):
             with rasterio.open(vsi_path) as src:
-                if pixel_window:
+                if pixel_window and pixel_window > 1:
+                    vals = []  # N×N focal mean
                     for lon, lat in coords:
                         row, col = src.index(lon, lat)
                         win = Window(
                             col - pixel_window // 2,
                             row - pixel_window // 2,
                             pixel_window,
-                            pixel_window,
+                            pixel_window
                         )
                         arr = src.read(1, window=win, boundless=True)
                         vals.append(float(arr.mean()))
                 else:
                     vals = [v[0] for v in src.sample(coords)]
         result[f"{var}_{res}_{istr}"] = vals
+
 
     return result
 
@@ -151,5 +152,14 @@ with col2:
     |---------------------|-----------|----------|
     | *...... ....*       | 18.425556 | 43.7125  |
     | *...... ....*       | 18.406944 | 43.7219  |
+
+    ### 🪟 Pixel window (odd integer ≥ 1)
+
+    Choose:
+    - **1** (or leave blank): Extract the **exact pixel value** at each coordinate (no averaging).
+    - **3, 5, 7, …**: Compute the **mean of an N × N window** centered on each point (e.g. 3×3 focal mean) — useful to reduce local noise or capture neighbourhood gradient.
+
+    If you don't need the mean, just set it to **1** and the app will retrieve the **raw raster value** directly.
+
     """)
 
