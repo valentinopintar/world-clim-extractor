@@ -22,7 +22,12 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
     # Bioclim has exactly 19 layers; all others have 12 monthly values
     max_layer = 19 if var.lower() == "bio" else 12
     for i in range(1, max_layer + 1):
-        istr = f"{i:02d}"
+        if var.lower() == "bio":
+            # Bioclim ima 19 slojeva, bez vodeće nule
+            istr = str(i)
+        else:
+            # Ostale varijable imaju 12 mjesečnih slojeva s vodećom nulom
+            istr = f"{i:02d}"
         inside = f"wc2.1_{res}_{var}_{istr}.tif"
 
         vsi_path = f"/vsizip/vsicurl/{zip_url}/{inside}"
