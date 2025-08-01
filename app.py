@@ -38,7 +38,7 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
                         vals.append(float(arr.mean()))
                 else:
                     vals = [v[0] for v in src.sample(coords)]
-        result[f"{var}_{res}_{mstr}"] = vals
+        result[f"{var}_{res}_{istr}"] = vals
 
     return result
 
