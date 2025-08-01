@@ -56,7 +56,7 @@ with col1:
 
         base_url = "geodata.ucdavis.edu/climate/worldclim/2_1/base"
         zip_url = f"{base_url}/wc2.1_{res}_{var}.zip"
-        st.markdown(f"📦 **Using ZIP URL**: [{zip_url}]({zip_url})")
+        st.markdown(f"📦 **Using ZIP URL**: {zip_url}")
 
         save_format = st.radio("💾 Download format", ["CSV", "Excel (XLSX)"])
         file_name = st.text_input("✏️ Output filename (no extension)", "output")
