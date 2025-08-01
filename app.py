@@ -54,7 +54,7 @@ with col1:
         res = st.selectbox("📏 Resolution", ["30s","2.5m","5m","10m"])
         pw = st.number_input("🪟 Pixel window (odd integer)", min_value=1, step=2, value=1)
 
-        base_url = "https://geodata.ucdavis.edu/climate/worldclim/2_1/base"
+        base_url = "geodata.ucdavis.edu/climate/worldclim/2_1/base"
         zip_url = f"{base_url}/wc2.1_{res}_{var}.zip"
         st.markdown(f"📦 **Using ZIP URL**: [{zip_url}]({zip_url})")
 
