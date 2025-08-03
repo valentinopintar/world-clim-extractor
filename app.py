@@ -121,20 +121,24 @@ with col2:
     st.markdown("""
     **Historical climate data**
 
-    This is WorldClim version 2.1 climate data for **1970–2000**. Released in January 2020.
+    This app allows you to extract historical climate data from the **WorldClim v2.1** (Released in January 2020) dataset  
+    for the period **1970–2000**.
+    You don't need to download or unzip anything manually — the data is streamed remotely. ✅
 
-    Available variables:
-    - Minimum, mean, and maximum **temperature**
-    - **Precipitation**
-    - **Solar radiation**, **wind speed**, **water vapor pressure**
-    - 19 **bioclimatic variables**
+    **Supported variables:**
+    - 🌡️ Temperature: `tmin`, `tmax`, `tavg`
+    - ☀️ Solar radiation: `srad`
+    - 🌬️ Wind speed: `wind`
+    - 💧 Water vapor pressure: `vapr`
+    - ☔ Precipitation: `prec`
+    - 🌱 Bioclimatic variables: `bio` (19 derived layers)
+    - 🏔️ Elevation: `elev`
+
+    **Spatial resolution options:**
+    - `30s` (≈1 km²), `2.5m`, `5m`, `10m` (arc-minutes, ≈5–340 km²)
 
     Each dataset comes as a ZIP file containing 12 GeoTIFFs, one for each **month**.
     For `"bio"` variables, a single ZIP contains 19 layers.
-
-    Available spatial resolutions:
-    - 30 seconds (~1 km²)
-    - 2.5, 5, and 10 arc-minutes (~5–340 km²)
 
     **Citation**:
     > Fick, S.E. and R.J. Hijmans, 2017. *WorldClim 2: new 1km spatial resolution climate surfaces for global land areas*. Int. J. of Climatology 37 (12): 4302–4315.
@@ -142,9 +146,10 @@ with col2:
 
     st.markdown("### 📥 Input File Format")
     st.markdown("""
-    Upload an Excel or CSV file with at least two columns:
-    - One for **Longitude**
-    - One for **Latitude**
+    ---
+    ### 📥 **How to use the app**
+    1. Upload a **CSV or Excel** file with at least two columns:  
+       **Longitude** and **Latitude** 
 
     Example:
 
@@ -152,14 +157,27 @@ with col2:
     |---------------------|-----------|----------|
     | *...... ....*       | 18.425556 | 43.7125  |
     | *...... ....*       | 18.406944 | 43.7219  |
+    
+    2. Choose the climate **variable**, **resolution**, and optionally a **pixel window**  
+   (for smoothing or averaging — see below).
 
-    ### 🪟 Pixel window (odd integer ≥ 1)
+    3. Select the **output format**: either **CSV** or **Excel (XLSX)**.
 
-    Choose:
-    - **1** (or leave blank): Extract the **exact pixel value** at each coordinate (no averaging).
-    - **3, 5, 7, …**: Compute the **mean of an N × N window** centered on each point (e.g. 3×3 focal mean) — useful to reduce local noise or capture neighbourhood gradient.
+    4. Click **Run extraction** ▶️ to fetch the data remotely.
+
+    5. Once extraction is complete, a **Download** button will appear for your chosen format.
+
+    ### 🪟 **Pixel window (optional)**
+
+    You can smooth the data by averaging values around each point:
+
+    - **Set to 1** *(default)* to return the **exact pixel value** (no averaging).
+    - **Set to 3, 5, 7, …** *(odd integers)* to return the **mean value over an N×N area**  
+      centered at each coordinate — useful for reducing local noise.
+
+    For example, a 3×3 window averages the 9 pixels surrounding your point.
 
     If you don't need the mean, just set it to **1** and the app will retrieve the **raw raster value** directly.
-
+     ---
     """)
 
