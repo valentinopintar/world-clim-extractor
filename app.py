@@ -144,7 +144,6 @@ with col2:
     > Fick, S.E. and R.J. Hijmans, 2017. *WorldClim 2: new 1km spatial resolution climate surfaces for global land areas*. Int. J. of Climatology 37 (12): 4302–4315.
     """)
 
-    st.markdown("### 📥 Input File Format")
     st.markdown("""
     ---
     ### 📥 **How to use the app**
