@@ -175,7 +175,7 @@ with col2:
       centered at each coordinate — useful for reducing local noise.
 
     For example, a 3×3 window averages the 9 pixels surrounding your point.
-
+    
     ℹ️ If you don't need the mean, just set it to **1** and the app will retrieve the **raw raster value** directly.
     ---
     """)
