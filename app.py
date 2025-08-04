@@ -88,8 +88,8 @@ st.markdown("""
         top: 5rem;
         left: 0.5rem;
         font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.87);
-        text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+        color: #222222;
+        text-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
         z-index: 1000;
     }
 
