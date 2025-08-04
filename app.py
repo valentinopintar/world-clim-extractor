@@ -57,30 +57,23 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
 st.set_page_config(layout="wide")
 st.markdown("""
     <style>
-    /* ~~~ background image ~~~ */
-    .background {
-        background-image: url('https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57723/globe_east_2048.jpg');
+    /* Set full-page background image */
+    .stApp {
+        background-image: url("https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57723/globe_east_2048.jpg");
         background-size: cover;
-        background-position: center;
         background-repeat: no-repeat;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        z-index: -1;
-        opacity: 0.2;
+        background-attachment: fixed;
+        background-position: center;
     }
 
-    /* ~~~ content container ~~~ */
+    /* Make all Streamlit content have transparent background */
     .block-container {
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 0.85);
         padding: 2rem;
         border-radius: 1rem;
-        box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
     }
 
-    /* ~~~ source credit link ~~~ */
+    /* ~~~ Source credit positioned in top-left corner */
     .image-credit {
         position: fixed;
         top: 1rem;
@@ -101,16 +94,13 @@ st.markdown("""
     }
     </style>
 
-    <!-- background div -->
-    <div class="background"></div>
-
-    <!-- overlay credit link -->
     <div class="image-credit">
-        <a href="https://visibleearth.nasa.gov/images/57723/the-blue-marble" target="_blank">
-            Photo: NASA/GSFC – Blue Marble 2002
-        </a>
+      <a href="https://visibleearth.nasa.gov/images/57723/the-blue-marble" target="_blank">
+        Photo: NASA/GSFC – Blue Marble 2002
+      </a>
     </div>
 """, unsafe_allow_html=True)
+
 
 st.markdown('<div class="block-container">', unsafe_allow_html=True)
 st.title("🌍 WorldClim Extractor")
