@@ -68,7 +68,7 @@ st.markdown("""
 
     /* Make all Streamlit content have transparent background */
     .block-container {
-        background-color: rgba(255, 255, 255, 0.75);
+        background-color: rgba(255, 255, 255, 0.70);
         padding: 2rem;
         border-radius: 1rem;
     }
@@ -85,7 +85,7 @@ st.markdown("""
     /* ~~~ Source credit positioned in top-left corner */
     .image-credit {
         position: fixed;
-        top: 3rem;
+        top: 5rem;
         left: 0.5rem;
         font-size: 0.75rem;
         color: rgba(255, 255, 255, 0.87);
