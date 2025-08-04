@@ -109,6 +109,7 @@ st.title("🌍 WorldClim Extractor")
 col1, col2 = st.columns([2, 1])
 
 with col1:
+    st.markdown('<div class="info-box">', unsafe_allow_html=True)
     uploaded = st.file_uploader(
         "📄 Upload CSV or Excel file with coordinates",
         type=["csv", "xlsx"]
@@ -164,12 +165,12 @@ with col1:
                 out.to_excel(xlsx_buffer, index=False, engine="openpyxl")
                 xlsx_buffer.seek(0)
                 st.download_button("⬇️ Download Excel", data=xlsx_buffer, file_name=f"{file_name}.xlsx")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with col2:
+    st.markdown('<div class="info-box">', unsafe_allow_html=True)
+    st.markdown("### ℹ️ **WorldClim Data Info**")
     st.markdown("""
-    <div class="info-box">
-    ### ℹ️ **WorldClim Data Info**
-
     **Historical climate data**
 
     This app allows you to extract historical climate data from the **WorldClim v2.1** (Released in January 2020) dataset  
@@ -226,7 +227,6 @@ with col2:
     For example, a 3×3 window averages the 9 pixels surrounding your point.
     
     ℹ️ If you don't need the mean, just set it to **1** and the app will retrieve the **raw raster value** directly.
-    </div>
-    """,
-    unsafe_allow_html=True)
+    """)
+    st.markdown('</div>', unsafe_allow_html=True)
 
