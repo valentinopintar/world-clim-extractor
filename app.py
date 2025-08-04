@@ -55,57 +55,65 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
 
 # --- Streamlit user interface ---
 st.set_page_config(layout="wide")
-st.markdown(
-    """
+st.markdown("""
     <style>
-      /* bacground image */
-      .stApp {
-        background-image: url("https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57723/globe_east_2048.jpg");
+    /* ~~~ background image ~~~ */
+    .background {
+        background-image: url('https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57723/globe_east_2048.jpg');
         background-size: cover;
         background-position: center;
-        background-attachment: fixed;
-      }
-
-      /* white bacground for description */
-      .info-box {
-        background-color: rgba(255, 255, 255, 0.90);
-        padding: 1.5rem;
-        border-radius: 0.375rem;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-      }
-
-      /* ~~~ source link */
-      .image-credit {
+        background-repeat: no-repeat;
         position: fixed;
-        bottom: 1rem;
-        right: 1rem;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: -1;
+        opacity: 0.2;
+    }
+
+    /* ~~~ content container ~~~ */
+    .block-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* ~~~ source credit link ~~~ */
+    .image-credit {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
         font-size: 0.75rem;
         color: rgba(255, 255, 255, 0.87);
         text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
         z-index: 1000;
-      }
+    }
 
-      .image-credit a {
+    .image-credit a {
         color: inherit;
         text-decoration: none;
-      }
-      .image-credit a:hover {
+    }
+
+    .image-credit a:hover {
         text-decoration: underline;
-      }
+    }
     </style>
+
+    <!-- background div -->
+    <div class="background"></div>
 
     <!-- overlay credit link -->
     <div class="image-credit">
-      <a href="https://visibleearth.nasa.gov/images/57723/the-blue-marble" target="_blank">
-        Photo: NASA/GSFC – Blue Marble 2002
-      </a>
+        <a href="https://visibleearth.nasa.gov/images/57723/the-blue-marble" target="_blank">
+            Photo: NASA/GSFC – Blue Marble 2002
+        </a>
     </div>
-    """,
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
+st.markdown('<div class="block-container">', unsafe_allow_html=True)
 st.title("🌍 WorldClim Extractor")
-st.markdown('<div class="info-box">', unsafe_allow_html=True)
 
 col1, col2 = st.columns([2, 1])
 
@@ -226,5 +234,6 @@ with col2:
     
     ℹ️ If you don't need the mean, just set it to **1** and the app will retrieve the **raw raster value** directly.
     """)
+
 st.markdown('</div>', unsafe_allow_html=True)
 
