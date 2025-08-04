@@ -20,22 +20,23 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
     }
 
     # Bioclim has exactly 19 layers; all others have 12 monthly values
-    max_layer = 19 if var.lower() == "bio" else 12
+    max_layer = 1 if var.lower() == "elev" else 19 if var.lower() == "bio" else 12
+
     for i in range(1, max_layer + 1):
         if var.lower() == "bio":
-            # Bioclim 19, starts with 1
             istr = str(i)
+        elif var.lower() == "elev":
+            istr = ""
         else:
             istr = f"{i:02d}"
-        inside = f"wc2.1_{res}_{var}_{istr}.tif"
-
+        
+        inside = f"wc2.1_{res}_{var}{'_' + istr if istr else ''}.tif"
         vsi_path = f"/vsizip/vsicurl/{zip_url}/{inside}"
 
-        vals = []
         with rasterio.Env(**gdal_cfg):
             with rasterio.open(vsi_path) as src:
                 if pixel_window and pixel_window > 1:
-                    vals = []  # N×N focal mean
+                    vals = []
                     for lon, lat in coords:
                         row, col = src.index(lon, lat)
                         win = Window(
@@ -48,8 +49,9 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
                         vals.append(float(arr.mean()))
                 else:
                     vals = [v[0] for v in src.sample(coords)]
-        result[f"{var}_{res}_{istr}"] = vals
 
+        key = f"{var}_{res}" if var.lower() == "elev" else f"{var}_{res}_{istr}"
+        result[key] = vals
 
     return result
 
