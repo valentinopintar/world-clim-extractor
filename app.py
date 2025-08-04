@@ -58,16 +58,50 @@ st.set_page_config(layout="wide")
 st.markdown(
     """
     <style>
-    .stApp {
-        background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/cf/A_large_blank_world_map_with_oceans_marked_in_blue.PNG');
+      /* bacground image */
+      .stApp {
+        background-image: url("https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57723/globe_east_2048.jpg");
         background-size: cover;
         background-position: center;
-        background-repeat: no-repeat;
-        background-color: rgba(255,255,255,0.4);
-    }
+        background-attachment: fixed;
+      }
+
+      /* white bacground for description */
+      .info-box {
+        background-color: rgba(255, 255, 255, 0.90);
+        padding: 1.5rem;
+        border-radius: 0.375rem;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      /* ~~~ source link */
+      .image-credit {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.87);
+        text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+      }
+
+      .image-credit a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .image-credit a:hover {
+        text-decoration: underline;
+      }
     </style>
+
+    <!-- overlay credit link -->
+    <div class="image-credit">
+      <a href="https://visibleearth.nasa.gov/images/57723/the-blue-marble" target="_blank">
+        Photo: NASA/GSFC – Blue Marble 2002
+      </a>
+    </div>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
 st.title("🌍 WorldClim Extractor")
@@ -132,8 +166,10 @@ with col1:
                 st.download_button("⬇️ Download Excel", data=xlsx_buffer, file_name=f"{file_name}.xlsx")
 
 with col2:
-    st.markdown("### ℹ️ **WorldClim Data Info**")
     st.markdown("""
+    <div class="info-box">
+    ### ℹ️ **WorldClim Data Info**
+
     **Historical climate data**
 
     This app allows you to extract historical climate data from the **WorldClim v2.1** (Released in January 2020) dataset  
@@ -157,9 +193,7 @@ with col2:
 
     **Citation**:
     > Fick, S.E. and R.J. Hijmans, 2017. *WorldClim 2: new 1km spatial resolution climate surfaces for global land areas*. Int. J. of Climatology 37 (12): 4302–4315.
-    """)
 
-    st.markdown("""
     ---
     ### 📥 **How to use the app**
     1. Upload a **CSV or Excel** file with at least two columns:  
@@ -192,6 +226,7 @@ with col2:
     For example, a 3×3 window averages the 9 pixels surrounding your point.
     
     ℹ️ If you don't need the mean, just set it to **1** and the app will retrieve the **raw raster value** directly.
-
-    """)
+    </div>
+    """,
+    unsafe_allow_html=True)
 
