@@ -85,12 +85,12 @@ st.markdown("""
     /* ~~~ Source credit positioned in top-left corner */
     .image-credit {
         position: fixed;
-        top: 5rem;
-        left: 0.5rem;
+        bottom: 1rem;
+        left: 1rem;
         font-size: 0.75rem;
         color: #222222;
         text-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
-        z-index: 1000;
+        z-index: 9999;
     }
 
     .image-credit a {
