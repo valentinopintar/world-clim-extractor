@@ -55,6 +55,21 @@ def extract_from_zip(df, lon_col, lat_col, var, res, pixel_window, zip_url):
 
 # --- Streamlit user interface ---
 st.set_page_config(layout="wide")
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/cf/A_large_blank_world_map_with_oceans_marked_in_blue.PNG');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: rgba(255,255,255,0.4);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.title("🌍 WorldClim Extractor")
 
 col1, col2 = st.columns([2, 1])
