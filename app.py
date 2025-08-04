@@ -59,7 +59,7 @@ st.markdown("""
     <style>
     /* Set full-page background image */
     .stApp {
-        background-image: url("https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57723/globe_east_2048.jpg");
+        background-image: url("https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57723/globe_west_2048.jpg");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
