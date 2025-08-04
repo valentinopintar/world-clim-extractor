@@ -68,16 +68,25 @@ st.markdown("""
 
     /* Make all Streamlit content have transparent background */
     .block-container {
-        background-color: rgba(255, 255, 255, 0.85);
+        background-color: rgba(255, 255, 255, 0.75);
         padding: 2rem;
         border-radius: 1rem;
+    }
+
+    header, .css-18e3th9 {
+        background-color: rgba(255, 255, 255, 0);
+        box-shadow: none;
+    }
+
+    main .block-container {
+        padding-top: 0rem;
     }
 
     /* ~~~ Source credit positioned in top-left corner */
     .image-credit {
         position: fixed;
-        top: 1rem;
-        left: 1rem;
+        top: 3rem;
+        left: 0.5rem;
         font-size: 0.75rem;
         color: rgba(255, 255, 255, 0.87);
         text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
