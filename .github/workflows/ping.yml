@@ -2,13 +2,25 @@ name: Keep Streamlit App Alive
 
 on:
   schedule:
-    # Pokreće se svakih 11 sati
     - cron: "0 */11 * * *"
 
 jobs:
-  ping:
+  keep-alive:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Streamlit app
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
         run: |
-          curl -s https://world-clim-extractor.streamlit.app/ > /dev/null
+          npm install -D playwright
+
+      - name: Run Playwright ping
+        run: |
+          npx playwright install
+          node ping.js
