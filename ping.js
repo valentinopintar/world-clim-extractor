@@ -11,7 +11,6 @@ const { chromium } = require('playwright');
     timeout: 60000
   });
 
-  // Zadrži se 10 sekundi kao pravi korisnik
   await page.waitForTimeout(10000);
 
   await browser.close();
